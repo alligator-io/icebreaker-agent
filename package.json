@@ -1,7 +1,7 @@
 {
   "name": "icebreaker-agent",
   "version": "0.1.0",
-  "description": "icebreaker-agent",
+  "description": "Generic icebreaker agent mixin.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,7 +11,8 @@
     "url": "https://github.com/alligator-io/icebreaker-agent.git"
   },
   "keywords": [
-    "agent"
+    "agent",
+    "icebreaker"
   ],
   "author": "Markus Wunderlin",
   "license": "MIT",
