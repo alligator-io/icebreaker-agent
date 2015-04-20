@@ -20,7 +20,7 @@
     "url": "https://github.com/alligator-io/icebreaker-agent/issues"
   },
   "homepage": "https://github.com/alligator-io/icebreaker-agent",
-  "dependencies": {
+  "devDependencies": {
     "icebreaker": "^0.6.0"
   }
 }
