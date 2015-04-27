@@ -5,6 +5,11 @@ function isFunction(obj) {
   return typeof obj === 'function'
 }
 
+function isPath(p){
+  return typeof p === 'string' && isNaN(p)
+}
+
+
 _.mixin({
   agent: function (params) {
     var a = function (options) {
@@ -37,68 +42,68 @@ _.mixin({
         this.emit('stop')
       }
 
-      var seen = {}
+      function find(test,test2){
+        return _(
+          _.asyncMap(function(p1,cb){
+            _(
+              isFunction(emitter.peers)?emitter.peers():_.values(emitter.peers),
+              _.find(function(p2){
+                return test(p1,p2)
+              },
+              function(err,peer){
+                if(err) return cb(null,false)
+                if(isFunction(test2))return cb(null,test2(peer,p1))
+                cb(null,peer?p1:false)
+              })
+            )
+          }),
+        _.filter()
+        )
+      }
+
+      function findNot(test){
+        return find(test,function(p1,p2){
+          return p1?false:p2
+        })
+      }
 
       emitter.connect= function () {
-        var list = function(){
-          return isFunction(this.peers)?this.peers():this.peers
-        }.bind(this)
-
         return _(
-        _.filter(function (d) {
-          if (!d) return false
-          for (var i in seen) {
-            var p = seen[i]
-            if (p.port === d.port && p.address === d.address) {
-              return false
+          findNot(function(p1,p2){
+            if(isPath(p2.port) && p1.port === p1.port) return true
+            return p1 && p2 && p1.port === p2.port && p1.address === p2.address
+          }),
+          find(function(p1,p2){
+            return p1.name === p2.name
+          }),
+          findNot(function(p1,p2){
+            for(var i in p2.connections){
+             var connection = p2.connections[i]
+             if(typeof connection ==='object' && connection.direction === 1){
+              if(isPath(p1.port) && p1.port === connection.port)return true
+              else if(!isPath(p1.port) && (
+              p1.address === connection.address ||
+              p1.address === connection.hostname ||
+              p1.hostname === connection.hostname ) &&
+              !isNaN(connection.port) &&
+              Number(p1.port)===Number(connection.port) ){
+                return true
+              }
             }
-          }
-          return true
-        }),
-        _.sink(function (read) {
-          read(null, function next(end, d) {
-            if (end) return
-
-            _(
-            list(),
-            _.find(function (p) {
-              return p && p.port === d.port && p.address === d.address
-            },
-            function (err, peer) {
-              if (err || peer) return read(null, next)
-              _(
-                list(),
-                _.find(function (peer) {
-                    return peer.name === d.name
-                  },
-                  function (err, peer) {
-
-                    if (!peer) return read(null, next)
-                    _(
-                      _.values(peer.connections),
-                      _.find(function (connection) {
-                          if (typeof d.port === 'string') {
-                            return connection.port === d.port
-                          }
-                          return connection.address === d.address
-                        },
-                        function (err, found) {
-                          if (err) return read(null, next)
-                          if (!found) peer.connect(d)
-                          read(null, next)
-                        }
-                      )
-                    )
-                  })
-              )
-
-            })
-            )
+            }
+            return false
+          }),
+          find(function(p1,p2){
+            return p1.name === p2.name
+          },
+          function(from,to){
+            return from?{from:from,to:to}:false
+          }),
+          _.drain(function(item){
+            item.from.connect({address:item.to.address,port:item.to.port})
           })
-
-        })())
-      }.bind(emitter)
-
+        )
+      }
 
       apply(params)
       apply(options)
