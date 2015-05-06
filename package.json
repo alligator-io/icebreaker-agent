@@ -1,6 +1,6 @@
 {
   "name": "icebreaker-agent",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Generic icebreaker agent mixin.",
   "main": "index.js",
   "scripts": {
