@@ -70,7 +70,7 @@ _.mixin({
       emitter.connect= function () {
         return _(
           findNot(function(p1,p2){
-            if(isPath(p2.port) && p1.port === p1.port) return true
+            if(isPath(p2.port) && p1.port === p2.port) return true
             return p1 && p2 && p1.port === p2.port && p1.address === p2.address
           }),
           find(function(p1,p2){
