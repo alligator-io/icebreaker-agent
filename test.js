@@ -53,7 +53,7 @@ test('start agents', function (t) {
     name: 'test-agent',
     start: function () {
       if (this.name === 'remote') _(_.values(localPeers), this.connect())
-      else _([_.values(remotePeers)], this.connect())
+      else _(_.values(remotePeers), this.connect())
       this.emit('started')
     },
     stop: function () {
@@ -80,8 +80,8 @@ test('start agents', function (t) {
 })
 
 test('connections', function next(t) {
-  t.plan(6)
-  t.equal(connections.length, 10)
+  t.plan(11)
+  t.equal(connections.length, 20)
   for (var i in connections) {
     var connection = connections[i]
     if (connection.direction === 1) {
