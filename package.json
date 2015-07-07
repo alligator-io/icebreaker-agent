@@ -21,8 +21,8 @@
   },
   "homepage": "https://github.com/alligator-io/icebreaker-agent",
   "devDependencies": {
-    "icebreaker": "^0.6.1",
-    "icebreaker-peer-net": "^0.3.0",
+    "icebreaker": "^0.7.0",
+    "icebreaker-peer-net": "^0.3.1",
     "tape": "^4.0.0"
   }
 }
