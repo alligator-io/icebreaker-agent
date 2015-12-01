@@ -1,6 +1,6 @@
 {
   "name": "icebreaker-agent",
-  "version": "0.2.2",
+  "version": "1.0.0",
   "description": "Generic icebreaker agent mixin.",
   "main": "index.js",
   "scripts": {
@@ -21,8 +21,7 @@
   },
   "homepage": "https://github.com/alligator-io/icebreaker-agent",
   "devDependencies": {
-    "icebreaker": "^0.7.0",
-    "icebreaker-peer-net": "^0.3.1",
-    "tape": "^4.0.0"
+    "icebreaker": "^1.0.1",
+    "tape": "^4.2.2"
   }
 }
